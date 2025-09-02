@@ -1,10 +1,9 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 import questions from "../quetionsBank";
 
 type Data = {
   id: number;
-  name: string;
+  name?: string;
 };
 
 export default function handler(
@@ -14,8 +13,16 @@ export default function handler(
   const { id } = req.query;
 
   if (!id || Array.isArray(id)) {
-    return res.status(400).json({ error: "Invalid id" });
+    return res.status(404).json({ error: "Invalid id" });
   }
 
-  res.status(200).json(questions[0].toObject());
+  const questionSelected = questions.filter((q) => {
+    return q.id === +id;
+  });
+
+  if (questionSelected.length === 1) {
+    res.status(200).json(questionSelected[0].shuffleAnswers().toObject());
+  } else {
+    return res.status(404).send({ error: "Invalid id" });
+  }
 }
