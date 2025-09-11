@@ -29,6 +29,10 @@ export default class AnswersModel {
     return this.#revealed;
   }
 
+  reveal() {
+    return new AnswersModel(this.#value, this.#correct, true);
+  }
+
   toObject() {
     return {
       value: this.#value,

@@ -1,8 +1,9 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=TASA+Orbiter:wght@400..800&display=swap');
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: white;
 }
 
 @theme inline {
@@ -22,5 +23,9 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: #6c54d8;
+}
+
+* {
+  font-family: "TASA+Orbiter", sans-serif;
 }
