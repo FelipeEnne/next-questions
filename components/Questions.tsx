@@ -3,6 +3,14 @@ import QuestionModel from "../model/question";
 import Announcement from "./Announcement";
 import Answer from "./Answer";
 
+const letters = [
+  { value: "A", color: "#f2c866" },
+  { value: "B", color: "#f266ba" },
+  { value: "C", color: "#85d4f2" },
+  { value: "D", color: "#bce596" },
+  { value: "E", color: "#FF8C00" },
+];
+
 interface QuestionProps {
   value: QuestionModel;
 }
@@ -17,8 +25,8 @@ export default function Question(props: QuestionProps) {
           key={i}
           value={a}
           index={i}
-          letter="A"
-          backgrounLetterColor="#f2c866"
+          letter={letters[i].value}
+          backgrounLetterColor={letters[i].color}
         />
       );
     });
