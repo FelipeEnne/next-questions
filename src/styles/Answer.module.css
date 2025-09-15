@@ -27,6 +27,27 @@
   background-color: white;
 }
 
+.back > div {
+  display: flex;
+  flex: 1;
+  border-radius: 12px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.right {
+  background-color: #2baa6d;
+}
+
+.wrong {
+  background-color: #e44a4c;
+}
+
+.right .value, .wrong .value{
+  font-size: 1rem;
+}
+
 .letter {
   display: flex;
   justify-content: center;

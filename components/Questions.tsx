@@ -13,6 +13,7 @@ const letters = [
 
 interface QuestionProps {
   value: QuestionModel;
+  onAnswer: (index: number) => void;
 }
 
 export default function Question(props: QuestionProps) {
@@ -27,6 +28,7 @@ export default function Question(props: QuestionProps) {
           index={i}
           letter={letters[i].value}
           backgrounLetterColor={letters[i].color}
+          onAnswer={props.onAnswer}
         />
       );
     });
