@@ -2,6 +2,7 @@ import { useState } from "react";
 import Question from "../../components/Questions";
 import AnswersModel from "../../model/answer";
 import QuestionModel from "../../model/question";
+import Button from "../../components/Button";
 
 const questionTest = new QuestionModel(
   1,
@@ -17,21 +18,32 @@ const questionTest = new QuestionModel(
 
 export default function Home() {
   const [question, setQuestion] = useState(questionTest);
-  console.log(question);
+
   function onAnswer(index: number) {
     setQuestion(question.answersWith(index));
+  }
+
+  function timeOut() {
+    if (!question.answered) setQuestion(question.answersWith(-1));
   }
 
   return (
     <div
       style={{
         display: "flex",
+        flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
         height: "100vh",
       }}
     >
-      <Question value={question} onAnswer={onAnswer} />
+      <Question
+        value={question}
+        onAnswer={onAnswer}
+        timeOut={timeOut}
+        timerToAnswer={5}
+      />
+      <Button text="Next" href="/result" />
     </div>
   );
 }
