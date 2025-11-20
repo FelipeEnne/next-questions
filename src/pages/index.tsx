@@ -1,8 +1,7 @@
 import { useState } from "react";
-import Question from "../../components/Questions";
+import Questionary from "../../components/Questionary";
 import AnswersModel from "../../model/answer";
 import QuestionModel from "../../model/question";
-import Button from "../../components/Button";
 
 const questionTest = new QuestionModel(
   1,
@@ -19,13 +18,9 @@ const questionTest = new QuestionModel(
 export default function Home() {
   const [question, setQuestion] = useState(questionTest);
 
-  function onAnswer(index: number) {
-    setQuestion(question.answersWith(index));
-  }
+  function questionAnswered(question: QuestionModel) {}
 
-  function timeOut() {
-    if (!question.answered) setQuestion(question.answersWith(-1));
-  }
+  function goToNextStep() {}
 
   return (
     <div
@@ -37,13 +32,12 @@ export default function Home() {
         height: "100vh",
       }}
     >
-      <Question
-        value={question}
-        onAnswer={onAnswer}
-        timeOut={timeOut}
-        timerToAnswer={5}
+      <Questionary
+        question={question}
+        last={true}
+        questionAnswered={questionAnswered}
+        goToNextStep={goToNextStep}
       />
-      <Button text="Next" href="/result" />
     </div>
   );
 }
