@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Questionary from "../../components/Questionary";
 import AnswersModel from "../../model/answer";
 import QuestionModel from "../../model/question";
@@ -15,8 +15,31 @@ const questionTest = new QuestionModel(
   ]
 );
 
+const BASE_URL = "http://localhost:3000/api";
+
 export default function Home() {
-  const [question, setQuestion] = useState(questionTest);
+  const [questionsIds, setQuestionsIds] = useState<number[]>([]);
+  const [question, setQuestion] = useState<QuestionModel>(questionTest);
+
+  async function loadQuestionsIds() {
+    const resp = await fetch(`${BASE_URL}/questionary`);
+    const questionsIds = await resp.json();
+    setQuestionsIds(questionsIds);
+  }
+
+  async function loadQuestion(questionId: number) {
+    const resp = await fetch(`${BASE_URL}/questions/${questionId}`);
+    const question = await resp.json();
+    console.log(question);
+  }
+
+  useEffect(() => {
+    loadQuestionsIds();
+  }, []);
+
+  useEffect(() => {
+    questionsIds.length > 0 && loadQuestion(questionsIds[0]);
+  }, [loadQuestionsIds]);
 
   function questionAnswered(question: QuestionModel) {}
 
