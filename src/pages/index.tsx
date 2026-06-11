@@ -12,7 +12,7 @@ const questionTest = new QuestionModel(
     AnswersModel.wrong("Ferramenta de versionamento de código"),
     AnswersModel.wrong("Biblioteca de animações para JavaScript"),
     AnswersModel.correct("Framework React para aplicações web com SSR/SSG"),
-  ]
+  ],
 );
 
 const BASE_URL = "http://localhost:3000/api";
@@ -20,6 +20,7 @@ const BASE_URL = "http://localhost:3000/api";
 export default function Home() {
   const [questionsIds, setQuestionsIds] = useState<number[]>([]);
   const [question, setQuestion] = useState<QuestionModel>(questionTest);
+  const [rightAnswer, setRightAnswer] = useState<number>(0);
 
   async function loadQuestionsIds() {
     const resp = await fetch(`${BASE_URL}/questionary`);
@@ -29,8 +30,9 @@ export default function Home() {
 
   async function loadQuestion(questionId: number) {
     const resp = await fetch(`${BASE_URL}/questions/${questionId}`);
-    const question = await resp.json();
-    console.log(question);
+    const json = await resp.json();
+    const newQuestion = QuestionModel.createUsingObj(json);
+    setQuestion(newQuestion);
   }
 
   useEffect(() => {
@@ -38,10 +40,16 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    questionsIds.length > 0 && loadQuestion(questionsIds[0]);
-  }, [loadQuestionsIds]);
+    if (questionsIds.length > 0) {
+      loadQuestion(questionsIds[0]);
+    }
+  }, [questionsIds]);
 
-  function questionAnswered(question: QuestionModel) {}
+  function questionAnswered(questionAnswered: QuestionModel) {
+    setQuestion(questionAnswered);
+    const right = questionAnswered.right;
+    setRightAnswer(rightAnswer + (right ? 1 : 0));
+  }
 
   function goToNextStep() {}
 

@@ -11,7 +11,7 @@ export default class QuestionModel {
     id: number,
     announcement: string,
     answers: AnswersModel[],
-    right = false
+    right = false,
   ) {
     this.#id = id;
     this.#announcement = announcement;
@@ -59,8 +59,15 @@ export default class QuestionModel {
       this.#id,
       this.#announcement,
       shuffleAnswers,
-      this.#right
+      this.#right,
     );
+  }
+
+  static createUsingObj(obj: QuestionModel): QuestionModel {
+    const answers = obj.answers.map((resp) =>
+      AnswersModel.createUsingObj(resp),
+    );
+    return new QuestionModel(obj.id, obj.announcement, answers, obj.right);
   }
 
   toObject() {
