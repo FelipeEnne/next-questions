@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Questionary from "../../components/Questionary";
 import AnswersModel from "../../model/answer";
 import QuestionModel from "../../model/question";
+import { useRouter } from "next/router";
 
 const questionTest = new QuestionModel(
   1,
@@ -18,9 +19,11 @@ const questionTest = new QuestionModel(
 const BASE_URL = "http://localhost:3000/api";
 
 export default function Home() {
+  const router = useRouter();
+
   const [questionsIds, setQuestionsIds] = useState<number[]>([]);
   const [question, setQuestion] = useState<QuestionModel>(questionTest);
-  const [rightAnswer, setRightAnswer] = useState<number>(0);
+  const [rightAnswers, setrightAnswers] = useState<number>(0);
 
   async function loadQuestionsIds() {
     const resp = await fetch(`${BASE_URL}/questionary`);
@@ -48,10 +51,34 @@ export default function Home() {
   function questionAnswered(questionAnswered: QuestionModel) {
     setQuestion(questionAnswered);
     const right = questionAnswered.right;
-    setRightAnswer(rightAnswer + (right ? 1 : 0));
+    setrightAnswers(rightAnswers + (right ? 1 : 0));
   }
 
-  function goToNextStep() {}
+  function idNextQuestion() {
+    if (question) {
+      const nextIndex = questionsIds.indexOf(question.id) + 1;
+      return questionsIds[nextIndex];
+    }
+  }
+
+  function goToNextStep() {
+    const nextId = idNextQuestion();
+    nextId ? toNextQuestion(nextId) : finish();
+  }
+
+  function toNextQuestion(nextId: number) {
+    loadQuestion(nextId);
+  }
+
+  function finish() {
+    router.push({
+      pathname: "/result",
+      query: {
+        total: questionsIds.length,
+        right: rightAnswers,
+      },
+    });
+  }
 
   return (
     <div
@@ -65,7 +92,7 @@ export default function Home() {
     >
       <Questionary
         question={question}
-        last={true}
+        last={idNextQuestion() === undefined}
         questionAnswered={questionAnswered}
         goToNextStep={goToNextStep}
       />
