@@ -4,12 +4,19 @@
   width: 80%;
   height: 100px;
   margin: 10px;
+  perpective: 1000px;
 }
 
 .contentAnswer {
   position: relative;
   display: flex;
   flex: 1;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+}
+
+.revealedResponse.contentAnswer {
+  transform: rotateY(180deg);
 }
 
 .front, .back {
@@ -17,6 +24,8 @@
   display: flex;
   height: 100%;
   width: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 .front {
@@ -25,6 +34,10 @@
   padding: 15px;
   color: black;
   background-color: white;
+}
+
+.back {
+  transform: rotateY(180deg);
 }
 
 .back > div {
