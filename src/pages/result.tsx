@@ -3,13 +3,16 @@ import Statistics from "../../components/Statistics";
 import styles from "../styles/Result.module.css";
 import { useRouter } from "next/router";
 
-export default function result() {
+export default function Result() {
   const router = useRouter();
 
-  const total = +router.query.total;
-  const right = +router.query.right;
-  const percent = Math.round((right / total) * 100);
+  const totalParam = router.query.total;
+  const rightParam = router.query.right;
 
+  const total = typeof totalParam === "string" ? Number(totalParam) : 0;
+  const right = typeof rightParam === "string" ? Number(rightParam) : 0;
+
+  const percent = total > 0 ? Math.round((right / total) * 100) : 0;
   return (
     <div className={styles.result}>
       <h1>Result</h1>

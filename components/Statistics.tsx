@@ -1,12 +1,12 @@
 import styles from "../src/styles/Statistics.module.css";
 
 interface StatisticsProps {
-  value: any;
+  value: number | string;
   text: string;
   backColor?: string;
   fontColor?: string;
 }
-export default function Statistics(props: type) {
+export default function Statistics(props: StatisticsProps) {
   return (
     <div className={styles.statistics}>
       <div

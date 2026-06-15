@@ -61,7 +61,11 @@ export default function Home() {
 
   function goToNextStep() {
     const nextId = idNextQuestion();
-    nextId ? toNextQuestion(nextId) : finish();
+    if (nextId) {
+      toNextQuestion(nextId);
+    } else {
+      finish();
+    }
   }
 
   function toNextQuestion(nextId: number) {

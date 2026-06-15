@@ -22,7 +22,7 @@ export default function Questionary(props: QuestionaryProps) {
       {props.question ? (
         <Question
           value={props.question}
-          timerToAnswer={6}
+          timerToAnswer={20}
           onAnswer={onAnswer}
           timeOut={props.goToNextStep}
         />
