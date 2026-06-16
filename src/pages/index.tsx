@@ -16,7 +16,7 @@ const questionTest = new QuestionModel(
   ],
 );
 
-const BASE_URL = "http://localhost:3000/api";
+const BASE_URL = "next-questions-eight.vercel.app/api";
 
 export default function Home() {
   const router = useRouter();
