@@ -26,7 +26,7 @@ export default function Home() {
   const [rightAnswers, setRightAnswers] = useState<number>(0);
 
   async function loadQuestionsIds() {
-    const resp = await fetch(`${BASE_URL}/questionary`);
+    const resp = await fetch(`${BASE_URL}/questionnaire`);
     const questionsIds = await resp.json();
     setQuestionsIds(questionsIds);
   }

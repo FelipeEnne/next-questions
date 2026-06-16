@@ -1,6 +1,6 @@
 import QuestionModel from "../model/question";
 import styles from "../src/styles/Questionary.module.css";
-import Question from "./Questions";
+import Question from "./Question";
 import Button from "./Button";
 
 interface QuestionaryProps {
