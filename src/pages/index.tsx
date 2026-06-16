@@ -1,41 +1,50 @@
 import { useEffect, useState } from "react";
 import Questionary from "../../components/Questionary";
-import AnswersModel from "../../model/answer";
 import QuestionModel from "../../model/question";
 import { useRouter } from "next/router";
+import Button from "../../components/Button";
 
-const questionTest = new QuestionModel(
-  1,
-  "Qual é a função principal do Next.js?",
-  [
-    AnswersModel.wrong("Criar apenas APIs REST"),
-    AnswersModel.wrong("Framework de CSS para React"),
-    AnswersModel.wrong("Ferramenta de versionamento de código"),
-    AnswersModel.wrong("Biblioteca de animações para JavaScript"),
-    AnswersModel.correct("Framework React para aplicações web com SSR/SSG"),
-  ],
-);
+type LoadStatus = "loading" | "error" | "ready";
 
-const BASE_URL = "next-questions-eight.vercel.app/api";
+const containerStyle = {
+  display: "flex",
+  flexDirection: "column" as const,
+  justifyContent: "center",
+  alignItems: "center",
+  height: "100vh",
+};
 
 export default function Home() {
   const router = useRouter();
 
+  const [status, setStatus] = useState<LoadStatus>("loading");
   const [questionsIds, setQuestionsIds] = useState<number[]>([]);
-  const [question, setQuestion] = useState<QuestionModel>(questionTest);
+  const [question, setQuestion] = useState<QuestionModel | null>(null);
   const [rightAnswers, setRightAnswers] = useState<number>(0);
 
   async function loadQuestionsIds() {
-    const resp = await fetch(`${BASE_URL}/questionnaire`);
-    const questionsIds = await resp.json();
-    setQuestionsIds(questionsIds);
+    setStatus("loading");
+    try {
+      const resp = await fetch("/api/questionnaire");
+      if (!resp.ok) throw new Error("Failed to load questionnaire");
+      const ids = await resp.json();
+      setQuestionsIds(ids);
+    } catch {
+      setStatus("error");
+    }
   }
 
   async function loadQuestion(questionId: number) {
-    const resp = await fetch(`${BASE_URL}/questions/${questionId}`);
-    const json = await resp.json();
-    const newQuestion = QuestionModel.createUsingObj(json);
-    setQuestion(newQuestion);
+    try {
+      const resp = await fetch(`/api/questions/${questionId}`);
+      if (!resp.ok) throw new Error("Failed to load question");
+      const json = await resp.json();
+      const newQuestion = QuestionModel.createUsingObj(json);
+      setQuestion(newQuestion);
+      setStatus("ready");
+    } catch {
+      setStatus("error");
+    }
   }
 
   useEffect(() => {
@@ -55,6 +64,7 @@ export default function Home() {
   }
 
   function idNextQuestion() {
+    if (!question) return undefined;
     const nextIndex = questionsIds.indexOf(question.id) + 1;
     return questionsIds[nextIndex];
   }
@@ -62,14 +72,10 @@ export default function Home() {
   function goToNextStep() {
     const nextId = idNextQuestion();
     if (nextId) {
-      toNextQuestion(nextId);
+      loadQuestion(nextId);
     } else {
       finish();
     }
-  }
-
-  function toNextQuestion(nextId: number) {
-    loadQuestion(nextId);
   }
 
   function finish() {
@@ -82,16 +88,25 @@ export default function Home() {
     });
   }
 
+  if (status === "loading") {
+    return (
+      <div style={containerStyle}>
+        <p>Carregando perguntas...</p>
+      </div>
+    );
+  }
+
+  if (status === "error") {
+    return (
+      <div style={containerStyle}>
+        <p>Não foi possível carregar as perguntas.</p>
+        <Button text="Tentar novamente" onClick={loadQuestionsIds} />
+      </div>
+    );
+  }
+
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100vh",
-      }}
-    >
+    <div style={containerStyle}>
       {question ? (
         <Questionary
           question={question}
@@ -99,9 +114,7 @@ export default function Home() {
           questionAnswered={questionAnswered}
           goToNextStep={goToNextStep}
         />
-      ) : (
-        false
-      )}
+      ) : null}
     </div>
   );
 }

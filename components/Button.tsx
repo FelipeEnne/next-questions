@@ -1,25 +1,25 @@
+import type { MouseEventHandler } from "react";
 import styles from "../src/styles/Button.module.css";
 import Link from "next/link";
 
 interface ButtonProps {
   href?: string;
   text: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  onClick?: (e: any) => void;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
 }
 
 export default function Button(props: ButtonProps) {
-  function renderButton() {
+  if (props.href) {
     return (
-      <button className={styles.button} onClick={props.onClick}>
+      <Link href={props.href} className={styles.button}>
         {props.text}
-      </button>
+      </Link>
     );
   }
 
-  return props.href ? (
-    <Link href={props.href}>{renderButton()}</Link>
-  ) : (
-    renderButton()
+  return (
+    <button className={styles.button} onClick={props.onClick}>
+      {props.text}
+    </button>
   );
 }

@@ -2,9 +2,9 @@ import { CountdownCircleTimer } from "react-countdown-circle-timer";
 import styles from "../src/styles/Timer.module.css";
 
 interface TimerProps {
-  key: number | string;
   duration: number;
   timerOut: () => void;
+  isPlaying?: boolean;
 }
 
 export default function Timer(props: TimerProps) {
@@ -12,7 +12,7 @@ export default function Timer(props: TimerProps) {
     <div className={styles.timer}>
       <CountdownCircleTimer
         size={120}
-        isPlaying
+        isPlaying={props.isPlaying ?? true}
         duration={props.duration}
         onComplete={props.timerOut}
         colors={["#bce596", "#f7b801", "#ed827a"]}

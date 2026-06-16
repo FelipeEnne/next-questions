@@ -53,6 +53,11 @@ export default class QuestionModel {
     return new QuestionModel(this.#id, this.#announcement, answers, correct);
   }
 
+  timedOut(): QuestionModel {
+    const answers = this.#answers.map((a) => (a.correct ? a.reveal() : a));
+    return new QuestionModel(this.#id, this.#announcement, answers, false);
+  }
+
   shuffleAnswers(): QuestionModel {
     const shuffleAnswers = shuffle(this.#answers);
     return new QuestionModel(

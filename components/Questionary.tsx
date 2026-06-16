@@ -17,18 +17,20 @@ export default function Questionary(props: QuestionaryProps) {
     }
   }
 
+  function onTimeOut() {
+    if (!props.question.answered) {
+      props.questionAnswered(props.question.timedOut());
+    }
+  }
+
   return (
     <div className={styles.questionary}>
-      {props.question ? (
-        <Question
-          value={props.question}
-          timerToAnswer={20}
-          onAnswer={onAnswer}
-          timeOut={props.goToNextStep}
-        />
-      ) : (
-        false
-      )}
+      <Question
+        value={props.question}
+        timerToAnswer={20}
+        onAnswer={onAnswer}
+        timeOut={onTimeOut}
+      />
       <Button
         onClick={props.goToNextStep}
         text={props.last ? "Finish" : "Next"}

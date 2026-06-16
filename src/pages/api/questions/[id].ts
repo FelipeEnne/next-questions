@@ -1,14 +1,12 @@
 import type { NextApiRequest, NextApiResponse } from "next";
+import QuestionModel from "../../../../model/question";
 import questions from "../questionsBank";
 
-type Data = {
-  id: number;
-  name?: string;
-};
+type QuestionData = ReturnType<InstanceType<typeof QuestionModel>["toObject"]>;
 
 export default function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Data | { error: string }>
+  res: NextApiResponse<QuestionData | { error: string }>
 ) {
   const { id } = req.query;
 

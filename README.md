@@ -1,40 +1,57 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
+# Quiz Next.js
 
-## Getting Started
+A multiple-choice quiz about **Next.js** concepts, built as a course project. It uses the **Pages Router** with in-memory API routes.
 
-First, run the development server:
+## Getting started
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+Other scripts:
 
-[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+```bash
+npm run build   # Production build
+npm run start   # Production server
+npm run lint    # ESLint
+```
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
+## Project structure
 
-This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+quiz/
+├── components/          # React components
+├── model/               # Domain classes (Question, Answer)
+├── functions/           # Utilities (shuffle)
+├── src/
+│   ├── pages/           # Pages and API routes
+│   └── styles/          # CSS Modules
+└── public/              # Static assets
+```
 
-## Learn More
+## API
 
-To learn more about Next.js, take a look at the following resources:
+| Endpoint | Description |
+|----------|-------------|
+| `GET /api/questionnaire` | Returns `number[]` with question IDs in shuffled order |
+| `GET /api/questions/[id]` | Returns the question object with shuffled answers |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
+Files: `src/pages/api/questionnaire/index.ts` and `src/pages/api/questions/[id].ts`.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Quiz flow
 
-## Deploy on Vercel
+1. The home page (`src/pages/index.tsx`) fetches the question order and loads the first one.
+2. The user answers within the time limit (20 seconds), or the timer reveals the correct answer as a wrong attempt.
+3. **Next** advances; on the last question, **Finish** ends the quiz.
+4. Results appear at `/result?total=N&right=M` with score statistics.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Stack
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
+- Next.js 15 (Pages Router)
+- React 19
+- TypeScript 5
+- CSS Modules
+- react-countdown-circle-timer

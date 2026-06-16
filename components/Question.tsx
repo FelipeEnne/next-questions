@@ -44,6 +44,7 @@ export default function Question(props: QuestionProps) {
         key={question.id}
         duration={props.timerToAnswer ?? 10}
         timerOut={props.timeOut}
+        isPlaying={!question.answered}
       />
       {renderAnswers()}
     </div>
