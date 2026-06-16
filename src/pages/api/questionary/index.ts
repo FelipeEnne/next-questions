@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import questions from "../quetionsBank";
+import questions from "../questionsBank";
 import { shuffle } from "../../../../functions/arrays";
 
 export default function handler(

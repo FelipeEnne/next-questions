@@ -39,3 +39,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Contexto local da IA (não versionar)
+.cursor/docs/
+.cursor/rules/project-context.mdc

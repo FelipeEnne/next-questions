@@ -30,7 +30,7 @@ export default function Question(props: QuestionProps) {
           value={a}
           index={i}
           letter={letters[i].value}
-          backgrounLetterColor={letters[i].color}
+          backgroundLetterColor={letters[i].color}
           onAnswer={props.onAnswer}
         />
       );

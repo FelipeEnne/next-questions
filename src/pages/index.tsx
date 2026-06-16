@@ -23,7 +23,7 @@ export default function Home() {
 
   const [questionsIds, setQuestionsIds] = useState<number[]>([]);
   const [question, setQuestion] = useState<QuestionModel>(questionTest);
-  const [rightAnswers, setrightAnswers] = useState<number>(0);
+  const [rightAnswers, setRightAnswers] = useState<number>(0);
 
   async function loadQuestionsIds() {
     const resp = await fetch(`${BASE_URL}/questionary`);
@@ -51,7 +51,7 @@ export default function Home() {
   function questionAnswered(questionAnswered: QuestionModel) {
     setQuestion(questionAnswered);
     const right = questionAnswered.right;
-    setrightAnswers(rightAnswers + (right ? 1 : 0));
+    setRightAnswers(rightAnswers + (right ? 1 : 0));
   }
 
   function idNextQuestion() {
